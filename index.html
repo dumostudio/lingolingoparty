@@ -1,0 +1,630 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#ffffff">
+<title>Samanta · Lingo Lingo Party</title>
+<style>
+:root{
+  --pink:#d64f9a;
+  --purple:#7452b8;
+  --blue:#69c6e5;
+  --yellow:#ffd72f;
+  --green:#62a979;
+  --orange:#ef6b2f;
+  --ink:#342443;
+}
+*{box-sizing:border-box}
+html,body{width:100%;height:100%;margin:0}
+body{
+  overflow:hidden;
+  background:#fff;
+  color:var(--ink);
+  font-family:"Trebuchet MS",system-ui,sans-serif;
+}
+button{font:inherit;border:0}
+.screen{
+  width:100%;
+  height:100dvh;
+  min-height:100svh;
+  position:relative;
+  overflow:hidden;
+}
+
+/* ---------------- OPENING ---------------- */
+.opening{
+  position:absolute;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:#fff;
+  z-index:20;
+  transition:opacity .45s ease, visibility .45s ease;
+}
+.opening.hide{opacity:0;visibility:hidden;pointer-events:none}
+
+.opening-art{
+  position:absolute;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.opening-art img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  object-position:center center;
+  display:block;
+}
+
+/* El botón cae sobre el espacio blanco superior izquierdo,
+   evitando tapar a las protagonistas. */
+.start{
+  position:absolute;
+  left:10%;
+  top:13%;
+  width:clamp(92px,25vw,128px);
+  aspect-ratio:1;
+  border-radius:50%;
+  cursor:pointer;
+  color:#fff;
+  background:
+    radial-gradient(circle at 35% 28%,#fff 0 5%,transparent 6%),
+    radial-gradient(circle at 65% 67%,rgba(255,255,255,.35) 0 5%,transparent 6%),
+    linear-gradient(145deg,#f06ab2 0%,#8b55c8 100%);
+  border:5px solid #fff;
+  box-shadow:
+    0 8px 0 #70449c,
+    0 12px 28px rgba(80,35,100,.28);
+  transform:rotate(-5deg);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  text-shadow:0 2px 0 rgba(80,30,90,.35);
+}
+.start::before{
+  content:"";
+  position:absolute;
+  inset:8px;
+  border:3px dashed rgba(255,255,255,.85);
+  border-radius:50%;
+}
+.start .tap{font-size:clamp(13px,4vw,18px);font-weight:1000;line-height:1}
+.start .go{font-size:clamp(24px,7vw,34px);font-weight:1000;line-height:1;margin-top:3px}
+.start .spark{position:absolute;font-size:18px}
+.start .s1{top:-9px;right:5px}
+.start .s2{bottom:3px;left:-9px}
+
+.opening-note{
+  position:absolute;
+  left:50%;
+  bottom:7%;
+  transform:translateX(-50%);
+  width:max-content;
+  max-width:80%;
+  padding:8px 14px;
+  border-radius:999px;
+  background:rgba(255,255,255,.86);
+  color:#70449c;
+  font-weight:900;
+  font-size:11px;
+  letter-spacing:.04em;
+  box-shadow:0 5px 18px rgba(70,30,80,.12);
+}
+
+/* ---------------- MAIN COUNTDOWN ---------------- */
+.main{
+  position:absolute;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  opacity:0;
+  pointer-events:none;
+  transition:opacity .45s ease;
+  background:
+    radial-gradient(circle at 18% 12%,rgba(255,215,47,.24),transparent 23%),
+    radial-gradient(circle at 88% 18%,rgba(105,198,229,.26),transparent 25%),
+    radial-gradient(circle at 50% 100%,rgba(214,79,154,.15),transparent 35%),
+    #fff;
+}
+.main.show{opacity:1;pointer-events:auto}
+
+.main-card{
+  width:min(92vw,430px);
+  height:min(94dvh,850px);
+  padding:clamp(12px,3vh,24px) clamp(16px,5vw,26px);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:space-between;
+  position:relative;
+  overflow:hidden;
+}
+
+.logo{
+  flex:0 0 auto;
+  text-align:center;
+  position:relative;
+  z-index:2;
+}
+.logo .lingo{
+  display:block;
+  color:#5fb9d7;
+  font-size:clamp(23px,7vw,34px);
+  font-weight:1000;
+  letter-spacing:-.08em;
+  text-shadow:
+    2px 2px 0 #fff,
+    4px 4px 0 #7b4fa9;
+  transform:rotate(-2deg);
+}
+.logo .party{
+  display:block;
+  margin-top:-4px;
+  color:#ee6b28;
+  font-size:clamp(22px,6vw,31px);
+  font-weight:1000;
+  letter-spacing:.04em;
+  text-shadow:2px 2px 0 #fff;
+}
+
+.logo-stars{
+  position:absolute;
+  inset:-15px -25px auto;
+  display:flex;
+  justify-content:space-between;
+  pointer-events:none;
+}
+.logo-stars span{font-size:15px}
+.logo-stars span:nth-child(1){color:var(--pink)}
+.logo-stars span:nth-child(2){color:var(--yellow)}
+.logo-stars span:nth-child(3){color:var(--blue)}
+
+.info{
+  text-align:center;
+  flex:0 0 auto;
+}
+.kicker{
+  color:var(--purple);
+  font-size:12px;
+  font-weight:1000;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+}
+.name{
+  margin:3px 0 0;
+  font-size:clamp(32px,10vw,52px);
+  line-height:.9;
+  font-weight:1000;
+  color:var(--pink);
+  text-shadow:3px 3px 0 #fff,5px 5px 0 rgba(116,82,184,.35);
+}
+.age{
+  margin-top:7px;
+  color:#59466c;
+  font-weight:900;
+  font-size:clamp(14px,4vw,18px);
+}
+
+.countdown{
+  width:100%;
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:7px;
+  flex:0 0 auto;
+}
+.unit{
+  padding:12px 3px 10px;
+  border-radius:19px;
+  background:rgba(255,255,255,.9);
+  border:3px solid var(--blue);
+  box-shadow:0 5px 0 rgba(105,198,229,.18);
+  text-align:center;
+}
+.unit:nth-child(2){border-color:var(--pink);box-shadow:0 5px 0 rgba(214,79,154,.16)}
+.unit:nth-child(3){border-color:var(--yellow);box-shadow:0 5px 0 rgba(255,215,47,.18)}
+.unit:nth-child(4){border-color:var(--purple);box-shadow:0 5px 0 rgba(116,82,184,.16)}
+.num{
+  font-size:clamp(25px,8vw,39px);
+  font-weight:1000;
+  line-height:1;
+  font-variant-numeric:tabular-nums;
+}
+.lab{
+  margin-top:4px;
+  font-size:9px;
+  font-weight:1000;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  color:#6e5b78;
+}
+
+.actions{
+  width:100%;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:9px;
+  flex:0 0 auto;
+}
+.action{
+  min-height:51px;
+  border-radius:17px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  padding:8px;
+  font-size:12px;
+  font-weight:1000;
+  color:#fff;
+  box-shadow:0 5px 0 rgba(0,0,0,.12);
+}
+.whatsapp{background:#58b96d}
+.maps{background:#6bbbd7}
+
+.small{
+  font-size:9px;
+  font-weight:900;
+  color:#9b8ba3;
+  text-transform:uppercase;
+  letter-spacing:.1em;
+  flex:0 0 auto;
+}
+
+/* ---------------- ZERO STATE ---------------- */
+.birthday{
+  position:absolute;
+  inset:0;
+  z-index:10;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:24px;
+  opacity:0;
+  visibility:hidden;
+  pointer-events:none;
+  background:
+    radial-gradient(circle at 50% 30%,rgba(255,215,47,.42),transparent 32%),
+    #fff;
+  transition:opacity .35s ease;
+}
+.birthday.show{opacity:1;visibility:visible}
+.birthday-inner{text-align:center}
+.birthday .mini-logo{
+  color:#5fb9d7;
+  font-weight:1000;
+  font-size:24px;
+  text-shadow:2px 2px 0 #fff,3px 3px 0 #7b4fa9;
+}
+.birthday h2{
+  margin:16px 0 0;
+  color:var(--pink);
+  font-size:clamp(34px,11vw,58px);
+  line-height:.9;
+  font-weight:1000;
+  text-shadow:3px 3px 0 #fff,5px 5px 0 rgba(116,82,184,.3);
+}
+.birthday p{
+  margin:12px 0 0;
+  color:var(--purple);
+  font-size:17px;
+  font-weight:1000;
+}
+
+/* ---------------- CONFETTI ---------------- */
+#confetti{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  z-index:30;
+  pointer-events:none;
+}
+
+/* Small phones */
+@media(max-height:650px){
+  .main-card{height:96dvh;padding-top:8px;padding-bottom:8px}
+  .logo .lingo{font-size:24px}
+  .logo .party{font-size:22px}
+  .name{font-size:34px}
+  .unit{padding:8px 2px}
+  .action{min-height:44px}
+}
+</style>
+</head>
+<body>
+<div class="screen">
+
+  <section class="opening" id="opening">
+    <div class="opening-art">
+      <img src="assets/tema-samanta.jpg" alt="Ilustración de la fiesta">
+    </div>
+
+    <!-- Botón colocado sobre una zona clara de la ilustración -->
+    <button class="start" id="startButton" aria-label="Abrir invitación">
+      <span class="spark s1">✦</span>
+      <span class="tap">TOCA</span>
+      <span class="go">¡AQUÍ!</span>
+      <span class="spark s2">✦</span>
+    </button>
+
+    <div class="opening-note">Una sorpresa te espera ✨</div>
+  </section>
+
+  <section class="main" id="main">
+    <div class="main-card">
+      <header class="logo">
+        <div class="logo-stars"><span>★</span><span>✦</span><span>★</span></div>
+        <span class="lingo">LINGO LINGO</span>
+        <span class="party">PARTY</span>
+      </header>
+
+      <div class="info">
+        <div class="kicker">¡Prepárate para celebrar!</div>
+        <h1 class="name">SAMANTA</h1>
+        <div class="age">🎉 ¡Cumple 7 años! 🎉</div>
+      </div>
+
+      <div class="countdown" aria-live="polite">
+        <div class="unit"><div class="num" id="days">00</div><div class="lab">Días</div></div>
+        <div class="unit"><div class="num" id="hours">00</div><div class="lab">Horas</div></div>
+        <div class="unit"><div class="num" id="minutes">00</div><div class="lab">Min</div></div>
+        <div class="unit"><div class="num" id="seconds">00</div><div class="lab">Seg</div></div>
+      </div>
+
+      <nav class="actions" id="actions">
+        <a class="action whatsapp" id="whatsapp" target="_blank" rel="noopener">💬 CONFIRMAR ASISTENCIA</a>
+        <a class="action maps" href="https://maps.app.goo.gl/dVYhm3HoDf5y5fSQ6" target="_blank" rel="noopener">📍 VER UBICACIÓN</a>
+      </nav>
+
+      <div class="small">Lingo Lingo Party · Plaza Andenes</div>
+    </div>
+  </section>
+
+  <section class="birthday" id="birthday">
+    <div class="birthday-inner">
+      <div class="mini-logo">LINGO LINGO PARTY</div>
+      <h2>¡FELIZ<br>CUMPLEAÑOS,<br>SAMANTA!</h2>
+      <p>🎉 Que tengas un día increíble 🎉</p>
+    </div>
+  </section>
+
+  <canvas id="confetti"></canvas>
+</div>
+
+<script>
+/*
+===========================================================
+CONFIGURACIÓN DEL DEMO
+===========================================================
+*/
+const EVENT = {
+  name: "SAMANTA",
+  age: 7,
+
+  // Enero 2027, 4:00 PM
+  date: "2027-01-17T16:00:00",
+
+  whatsapp: "528110314514",
+
+  map: "https://maps.app.goo.gl/dVYhm3HoDf5y5fSQ6"
+};
+
+const opening = document.getElementById("opening");
+const main = document.getElementById("main");
+const birthday = document.getElementById("birthday");
+const startButton = document.getElementById("startButton");
+const actions = document.getElementById("actions");
+const whatsapp = document.getElementById("whatsapp");
+
+whatsapp.href =
+  "https://wa.me/" + EVENT.whatsapp +
+  "?text=" + encodeURIComponent(
+    `Hola, quiero confirmar mi asistencia a la fiesta de ${EVENT.name}.`
+  );
+
+/* ---------------- CONFETTI ---------------- */
+const canvas = document.getElementById("confetti");
+const ctx = canvas.getContext("2d");
+let pieces = [];
+let confettiRunning = false;
+let confettiUntil = 0;
+
+function resizeCanvas(){
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  canvas.width = innerWidth * dpr;
+  canvas.height = innerHeight * dpr;
+  canvas.style.width = innerWidth + "px";
+  canvas.style.height = innerHeight + "px";
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+}
+window.addEventListener("resize", resizeCanvas);
+resizeCanvas();
+
+const confettiColors = ["#d64f9a","#7452b8","#69c6e5","#ffd72f","#62a979","#ef6b2f"];
+
+function burst(count=150){
+  for(let i=0;i<count;i++){
+    pieces.push({
+      x: innerWidth/2 + (Math.random()-.5)*80,
+      y: innerHeight*.48,
+      vx:(Math.random()-.5)*12,
+      vy:-Math.random()*11-5,
+      size:Math.random()*7+4,
+      rot:Math.random()*Math.PI,
+      vr:(Math.random()-.5)*.25,
+      gravity:.18+Math.random()*.12,
+      life:1,
+      color:confettiColors[Math.floor(Math.random()*confettiColors.length)]
+    });
+  }
+}
+
+function startConfetti(duration){
+  confettiRunning = true;
+  confettiUntil = performance.now() + duration;
+  burst(220);
+  requestAnimationFrame(confettiLoop);
+}
+
+function confettiLoop(now){
+  ctx.clearRect(0,0,innerWidth,innerHeight);
+
+  if(confettiRunning && now < confettiUntil){
+    if(Math.random()<.12) burst(8);
+
+    for(const p of pieces){
+      p.x += p.vx;
+      p.vy += p.gravity;
+      p.y += p.vy;
+      p.rot += p.vr;
+      p.life -= .002;
+
+      ctx.save();
+      ctx.translate(p.x,p.y);
+      ctx.rotate(p.rot);
+      ctx.globalAlpha=Math.max(0,p.life);
+      ctx.fillStyle=p.color;
+      ctx.fillRect(-p.size/2,-p.size/2,p.size,p.size*.65);
+      ctx.restore();
+    }
+
+    pieces = pieces.filter(p => p.y < innerHeight+30 && p.life>0);
+    requestAnimationFrame(confettiLoop);
+  } else {
+    confettiRunning=false;
+    pieces=[];
+    ctx.clearRect(0,0,innerWidth,innerHeight);
+  }
+}
+
+/* ---------------- AUDIO ----------------
+   Sin archivos externos: Web Audio genera una melodía
+   sencilla tipo MIDI. Se puede sustituir después por
+   archivos de audio reales si lo deseas.
+*/
+let audioCtx;
+let musicTimer;
+let musicStop = false;
+
+const notes = {
+  C4:261.63,D4:293.66,E4:329.63,F4:349.23,
+  G4:392.00,A4:440.00,B4:493.88,
+  C5:523.25,D5:587.33,E5:659.25,F5:698.46,
+  G5:783.99,A5:880.00
+};
+
+const melody = [
+  ["C4",.35],["E4",.35],["G4",.35],["E4",.35],
+  ["F4",.35],["A4",.35],["G4",.7],
+  ["E4",.35],["G4",.35],["C5",.35],["G4",.35],
+  ["A4",.35],["G4",.35],["E4",.7]
+];
+
+function playTone(freq, duration, when, type="triangle", volume=.055){
+  if(!audioCtx) return;
+  const osc=audioCtx.createOscillator();
+  const gain=audioCtx.createGain();
+  osc.type=type;
+  osc.frequency.value=freq;
+  gain.gain.setValueAtTime(.0001,when);
+  gain.gain.exponentialRampToValueAtTime(volume,when+.02);
+  gain.gain.exponentialRampToValueAtTime(.0001,when+duration-.03);
+  osc.connect(gain).connect(audioCtx.destination);
+  osc.start(when);
+  osc.stop(when+duration);
+}
+
+function startLoopMusic(){
+  audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  musicStop=false;
+
+  function loop(){
+    if(musicStop) return;
+    let t=audioCtx.currentTime+.05;
+    for(const [note,dur] of melody){
+      playTone(notes[note],dur*.9,t);
+      t += dur;
+    }
+    musicTimer=setTimeout(loop, melody.reduce((a,b)=>a+b[1],0)*1000);
+  }
+  loop();
+}
+
+function stopMusic(){
+  musicStop=true;
+  if(musicTimer) clearTimeout(musicTimer);
+}
+
+/* Happy Birthday: melodía sencilla */
+const happyBirthday = [
+  ["G4",.28],["G4",.28],["A4",.5],["G4",.5],["C5",.5],["B4",.9],
+  ["G4",.28],["G4",.28],["A4",.5],["G4",.5],["D5",.5],["C5",.9],
+  ["G4",.28],["G4",.28],["G5",.5],["E5",.5],["C5",.5],["B4",.5],["A4",.9]
+];
+
+function playHappyBirthday(){
+  if(!audioCtx) return;
+  let t=audioCtx.currentTime+.08;
+  for(const [note,dur] of happyBirthday){
+    playTone(notes[note],dur*.92,t,"triangle",.075);
+    t += dur;
+  }
+}
+
+/* ---------------- COUNTDOWN ---------------- */
+const target = new Date(EVENT.date).getTime();
+let finished=false;
+
+function pad(v){return String(Math.max(0,v)).padStart(2,"0")}
+
+function update(){
+  if(finished) return;
+  const distance=target-Date.now();
+
+  if(distance<=0){
+    finishBirthday();
+    return;
+  }
+
+  const total=Math.floor(distance/1000);
+  document.getElementById("days").textContent=pad(Math.floor(total/86400));
+  document.getElementById("hours").textContent=pad(Math.floor((total%86400)/3600));
+  document.getElementById("minutes").textContent=pad(Math.floor((total%3600)/60));
+  document.getElementById("seconds").textContent=pad(total%60);
+}
+
+function finishBirthday(){
+  finished=true;
+  stopMusic();
+  actions.style.display="none";
+  main.classList.remove("show");
+  birthday.classList.add("show");
+
+  // Segunda explosión de confeti.
+  startConfetti(30000);
+  burst(320);
+
+  setTimeout(playHappyBirthday,120);
+}
+
+startButton.addEventListener("click",()=>{
+  opening.classList.add("hide");
+  main.classList.add("show");
+
+  // Primera explosión + música + countdown.
+  startConfetti(120000);
+  startLoopMusic();
+  update();
+});
+
+update();
+setInterval(update,1000);
+</script>
+</body>
+</html>
